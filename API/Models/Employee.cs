@@ -6,7 +6,7 @@ namespace API.Models
     public class Employee
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ForeignKey("account")]
         public string NIK { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -15,7 +15,7 @@ namespace API.Models
         public int Salary {  get; set; }
         public string Email {  get; set; }
         public Gender Gender { get; set; }
-        public Account Account { get; set; }
+        public Account account { get; set; }
     }
     public enum Gender
     {
