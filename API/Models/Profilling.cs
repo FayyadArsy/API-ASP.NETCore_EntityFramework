@@ -9,7 +9,7 @@ namespace API.Models
         /*[ForeignKey("NIK")]*/
         [Key]
         public string NIK { get; set; }
-    
         public Education Education { get; set; }
-    }
+        
+     }
 }

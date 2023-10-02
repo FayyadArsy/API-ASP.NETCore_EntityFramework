@@ -9,6 +9,6 @@ namespace API.Models
         [ForeignKey("profilling")]
         public string NIK { get; set; }
         public string password { get; set; }
-     public Profilling profilling { get; set; }
+        public Profilling profilling { get; set; }
     }
 }
