@@ -6,9 +6,9 @@ namespace API.Models
     public class Account
     {
         [Key]
-        [ForeignKey("profilling")]
         public string NIK { get; set; }
         public string password { get; set; }
-        public Profilling profilling { get; set; }
+        public Employee Employee { get; set; }
+        public Profilling Profilling { get; set; }
     }
 }

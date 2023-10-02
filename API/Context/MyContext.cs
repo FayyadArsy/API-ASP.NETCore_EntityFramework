@@ -19,14 +19,24 @@ namespace API.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Account>()
+                .HasOne(a => a.Employee)
+                .WithOne(e => e.account)
+                .HasForeignKey<Account>(a => a.NIK);
             modelBuilder.Entity<Education>()
                 .HasMany(c => c.Profillings)
-                .WithOne(e => e.Education);
-            /*  .HasForeignKey(e => e.NIK);*/
+                .WithOne(e => e.Education)
+                .HasForeignKey(e => e.Education_id);
             modelBuilder.Entity<Education>()
                 .HasOne(e => e.University)
-                .WithMany(c => c.Educations);
-                base.OnModelCreating(modelBuilder);
+                .WithMany(e => e.Educations)
+                .HasForeignKey(e => e.University_Id)
+                .IsRequired();
+            modelBuilder.Entity<Profilling>()
+                .HasOne(p => p.Account)
+                .WithOne(a => a.Profilling)
+                .HasForeignKey<Profilling>(p => p.NIK)
+                .IsRequired();
         }
 
 

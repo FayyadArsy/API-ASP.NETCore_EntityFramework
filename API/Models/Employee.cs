@@ -6,7 +6,6 @@ namespace API.Models
     public class Employee
     {
         [Key]
-        [ForeignKey("account")]
         public string NIK { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

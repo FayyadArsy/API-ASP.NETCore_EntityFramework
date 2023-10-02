@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.ViewModel;
 
 namespace API.Repository.Interface
 {
@@ -9,5 +10,6 @@ namespace API.Repository.Interface
         int Insert(Employee employee);
         int Update(Employee employee);
         int Delete(string NIK);
+        int Register(RegisterVM register);
     }
 }

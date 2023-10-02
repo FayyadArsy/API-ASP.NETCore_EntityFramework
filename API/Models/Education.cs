@@ -7,11 +7,16 @@ namespace API.Models
     {
         [Key]
         public int Id { get; set; }
-        public string? Degree { get; set; }
-        public string? GPA { get; set; }
-/*degree jadikan ennum, d3, s1,s2,s3*/
+        public Degree Degree { get; set; }
+        public string GPA { get; set; }
+        public int University_Id { get; set; }
         public University University { get; set; }
         public ICollection<Profilling> Profillings { get; set;}
 
+    }
+
+    public enum Degree
+    {
+        D3, D4, S1, S2, S3,
     }
 }

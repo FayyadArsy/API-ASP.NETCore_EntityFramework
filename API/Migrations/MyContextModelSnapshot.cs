@@ -44,18 +44,19 @@ namespace API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Degree")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Degree")
+                        .HasColumnType("int");
 
                     b.Property<string>("GPA")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UniversityId")
+                    b.Property<int>("University_Id")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UniversityId");
+                    b.HasIndex("University_Id");
 
                     b.ToTable("Educations");
                 });
@@ -100,12 +101,12 @@ namespace API.Migrations
                     b.Property<string>("NIK")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("EducationId")
+                    b.Property<int>("Education_id")
                         .HasColumnType("int");
 
                     b.HasKey("NIK");
 
-                    b.HasIndex("EducationId");
+                    b.HasIndex("Education_id");
 
                     b.ToTable("Profillings");
                 });
@@ -128,51 +129,60 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.Account", b =>
                 {
-                    b.HasOne("API.Models.Profilling", "profilling")
-                        .WithMany()
-                        .HasForeignKey("NIK")
+                    b.HasOne("API.Models.Employee", "Employee")
+                        .WithOne("account")
+                        .HasForeignKey("API.Models.Account", "NIK")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("profilling");
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("API.Models.Education", b =>
                 {
                     b.HasOne("API.Models.University", "University")
                         .WithMany("Educations")
-                        .HasForeignKey("UniversityId")
+                        .HasForeignKey("University_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("University");
                 });
 
-            modelBuilder.Entity("API.Models.Employee", b =>
-                {
-                    b.HasOne("API.Models.Account", "account")
-                        .WithMany()
-                        .HasForeignKey("NIK")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("account");
-                });
-
             modelBuilder.Entity("API.Models.Profilling", b =>
                 {
                     b.HasOne("API.Models.Education", "Education")
                         .WithMany("Profillings")
-                        .HasForeignKey("EducationId")
+                        .HasForeignKey("Education_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Models.Account", "Account")
+                        .WithOne("Profilling")
+                        .HasForeignKey("API.Models.Profilling", "NIK")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Account");
+
                     b.Navigation("Education");
+                });
+
+            modelBuilder.Entity("API.Models.Account", b =>
+                {
+                    b.Navigation("Profilling")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("API.Models.Education", b =>
                 {
                     b.Navigation("Profillings");
+                });
+
+            modelBuilder.Entity("API.Models.Employee", b =>
+                {
+                    b.Navigation("account")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("API.Models.University", b =>

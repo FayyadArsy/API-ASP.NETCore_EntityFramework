@@ -2,6 +2,8 @@
 using API.Controllers;
 using API.Models;
 using API.Repository.Interface;
+using API.ViewModel;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 using System.Net;
@@ -18,6 +20,55 @@ namespace API.Repository
         public EmployeeRepository(MyContext context)
         {
             this.context = context;
+        }
+        public int Register(RegisterVM register)
+        {
+            var employee = new Employee
+            {
+                NIK = CustomNIK(),
+                FirstName = register.FirstName,
+                LastName = register.LastName,
+                Phone = register.Phone,
+                BirthDate = register.BirthDate,
+                Salary = register.Salary,
+                Email = register.Email,
+                Gender = register.Gender,
+            };
+            context.Employees.Add(employee);
+            var setEmployee = context.SaveChanges();
+
+            var account = new Account
+            {
+                NIK = employee.NIK,
+                password = register.Password,
+            };
+            context.Accounts.Add(account);
+            var setAccount = context.SaveChanges();
+
+            var education = new Education
+            {
+                Degree = register.Degree,
+                GPA = register.GPA,
+                University_Id = register.University_Id,
+            };
+            context.Educations.Add(education);
+            var setEducation = context.SaveChanges();
+
+            var profilling = new Profilling
+            {
+                NIK = employee.NIK,
+                Education_id = education.Id
+            };
+            context.Profillings.Add(profilling);
+            var setProfilling = context.SaveChanges();
+            if ((setEmployee > 0) && (setAccount > 0) && (setEducation > 0) && (setProfilling > 0))
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
         public IEnumerable<Employee> Get()
         {
@@ -40,6 +91,15 @@ namespace API.Repository
         public int Insert(Employee employee)
         {
            
+            
+            employee.NIK = CustomNIK();
+            context.Employees.Add(employee);
+            var result = context.SaveChanges();
+            return result;
+        }
+
+        private string CustomNIK()
+        {
             string date = DateTime.Now.ToString("ddMMyy");
             string newNIK = "";
 
@@ -56,12 +116,9 @@ namespace API.Repository
 
                 int nextSequence = int.Parse(lastThree) + 1;
                 newNIK = date + nextSequence.ToString("000");
-/*return current date tostring ("D3")*/
+                /*return current date tostring ("D3")*/
             }
-            employee.NIK = newNIK;
-            context.Employees.Add(employee);
-            var result = context.SaveChanges();
-            return result;
+            return newNIK;
         }
 
         public int Update(Employee employee)
@@ -73,17 +130,7 @@ namespace API.Repository
            /* throw new NotImplementedException();*/
         }
 
-        public List<string>  CustomNIK(Employee employee, int totalNIK)
-        {
-            var hasil = new List<string>();
-            var tanggal = DateTime.Now.ToString("ddMMyyyy");
-            for(int i=0; i < totalNIK; i++)
-            {
-                var custom = tanggal + i.ToString().PadLeft(2, '0');
-                hasil.Add(custom);
-            }
-            return hasil;
-        }
+        
         public bool CheckEmail(Employee employee)
         {
              return context.Employees.Any(e => e.Email == employee.Email);

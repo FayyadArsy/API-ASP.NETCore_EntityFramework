@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "euf9z0B4OdtXbicXVHoqt8vHOr57h3eF1ZA3hwtD7XR3zl6rHHw2KyHVXklvB9vn6uTqlEiBN/gy3rQVbLtDsw==",
+  "dgSpecHash": "RAld/+t+dvmQeQ1NuvszEl49KWnsRbwfk7Cr/+RfDz6zg7pxcFBj0z8EKh5Hsld9OTljckAKiCLpzG/jYRPq7w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\fayyad.nandi\\source\\repos\\API\\API\\API.csproj",
+  "projectFilePath": "D:\\C#\\API\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fayyad.nandi\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\fayyad.nandi\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
