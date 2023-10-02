@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.Metrics;
 using System.Net;
+using System.Numerics;
 using System.Security;
 
 namespace API.Repository
@@ -74,6 +75,11 @@ namespace API.Repository
         {
             return context.Employees.ToList();
         }
+        public IEnumerable<Employee> Getv2()
+        {
+            return context.Employees.ToList();
+        }
+
 
         public Employee Get(string NIK)
         {
@@ -131,18 +137,34 @@ namespace API.Repository
         }
 
         
-        public bool CheckEmail(Employee employee)
+        public bool CheckEmail(string email)
         {
-             return context.Employees.Any(e => e.Email == employee.Email);
+             return context.Employees.Any(employee => employee.Email == email);
             /*if (context.Employees.Any(e => e.Email == employee.Email))
             {
                 return false;
             }
             else return true;*/
         }
-        public bool CheckPhoneNumber(Employee employee)
+        public bool CheckPhoneNumber(string phone)
         {
-            return context.Employees.Any(e => e.Phone == employee.Phone);
+            var data = context.Employees.AsNoTracking().FirstOrDefault(employee => employee.Phone == phone);
+            if (data == null)
+            {
+                return false;
+            }
+            return true;
         }
+   /*     public bool CheckUniversity(Employee employee)
+        {
+            var data = context.Universities.Find(id);
+            if (data == null)
+            {
+                return false;
+            }
+            return true;
+        }*/
+
+       
     }
 }

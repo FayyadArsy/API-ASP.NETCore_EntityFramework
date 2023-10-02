@@ -1,6 +1,7 @@
 ﻿using API.Context;
 using API.Models;
 using API.Repository;
+using API.ViewModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -22,13 +23,19 @@ namespace API.Controllers
             var allData = repository.Get();
             return Ok(new { status = HttpStatusCode.OK, response = "Menampilkan Seluruh Data", allData });
         }
+        [HttpGet("v2")]
+        public ActionResult Getv2()
+        {
+            var allData = repository.Getv2();
+            return Ok(new { status = HttpStatusCode.OK, response = "Menampilkan Seluruh Data", allData });
+        }
         [HttpPost]
         public virtual ActionResult Insert(Employee employee)
         {
             try
             {
-                var emailExists = repository.CheckEmail(employee);
-                var phoneExists = repository.CheckPhoneNumber(employee);
+                var emailExists = repository.CheckEmail(employee.Email);
+                var phoneExists = repository.CheckPhoneNumber(employee.Phone);
 
                 if (emailExists)
                 {
@@ -68,8 +75,8 @@ namespace API.Controllers
 
             try
             {
-                var emailExists = repository.CheckEmail(employee);
-                var phoneExists = repository.CheckPhoneNumber(employee);
+                var emailExists = repository.CheckEmail(employee.Email);
+                var phoneExists = repository.CheckPhoneNumber(employee.Phone);
 
                 if (emailExists)
                 {
@@ -94,6 +101,23 @@ namespace API.Controllers
             {
                 return BadRequest(new { response = "Gagal", ErrorMessage = e.Message });
             }
+        }
+
+        [HttpPost("register")]
+        public virtual ActionResult Register(RegisterVM register)
+        {
+            if (repository.CheckEmail(register.Email) == true)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Email tidak boleh duplikat." });
+            }
+            else if (repository.CheckPhoneNumber(register.Phone) == true)
+            {
+                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Phone tidak boleh duplikat." });
+            }
+           
+
+            repository.Register(register);
+            return Ok(new { status = HttpStatusCode.OK, message = "Data berhasil ditambahkan." });
         }
 
         [HttpDelete("/delete/{NIK}")]
