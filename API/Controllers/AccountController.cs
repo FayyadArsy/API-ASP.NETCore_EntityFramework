@@ -14,22 +14,41 @@ namespace API.Controllers
         {
             this.repository = repository;
         }
-        [HttpGet]
-        public ActionResult Login(string Email, string Password)
+
+        [HttpGet("Email")]
+        public async Task<IActionResult> Index()
         {
-            if (Email == null || Password == null)
+            var receiver = "yerol89830@hapincy.com";
+            var subject = "Test Email";
+            var body = "Hello World";
+
+            try
             {
-                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Email atau password tidak boleh kosong." });
+                await repository.SendEmailAsync(receiver, subject, body);
+                return Ok("Email sent successfully."); // Mengembalikan OK dengan pesan sukses.
             }
-
-            var result = repository.Login(Email, Password);
-
-            if (result == false)
+            catch (Exception ex)
             {
-                return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Email atau Password salah." });
+                return BadRequest($"Failed to send email: {ex.Message}"); // Mengembalikan BadRequest dengan pesan kesalahan jika terjadi masalah.
             }
+        }
 
-            return Ok(new { status = HttpStatusCode.OK, message = "Login berhasil." });
+            [HttpGet]
+            public ActionResult Login(string Email, string Password)
+            {
+                if (Email == null || Password == null)
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Email atau password tidak boleh kosong." });
+                }
+
+                var result = repository.Login(Email, Password);
+
+                if (result == false)
+                {
+                    return BadRequest(new { status = HttpStatusCode.BadRequest, message = "Email atau Password salah." });
+                }
+
+                return Ok(new { status = HttpStatusCode.OK, message = "Login berhasil." });
+            }
         }
     }
-}
