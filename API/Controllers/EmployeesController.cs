@@ -27,7 +27,7 @@ namespace API.Controllers
         public ActionResult Getv2()
         {
             var allData = repository.Getv2();
-            return Ok(new { status = HttpStatusCode.OK, response = "Menampilkan Seluruh Data", allData });
+            return Ok(new { status = HttpStatusCode.OK, response = "Menampilkan Seluruh Datav2", allData });
         }
         [HttpPost]
         public virtual ActionResult Insert(Employee employee)

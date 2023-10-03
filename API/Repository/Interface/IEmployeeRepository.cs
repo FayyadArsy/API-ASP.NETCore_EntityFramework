@@ -11,5 +11,6 @@ namespace API.Repository.Interface
         int Update(Employee employee);
         int Delete(string NIK);
         int Register(RegisterVM register);
+        IEnumerable<GetVM> Getv2();
     }
 }

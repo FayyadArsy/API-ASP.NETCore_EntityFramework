@@ -5,10 +5,13 @@ using API.Repository.Interface;
 using API.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using System;
 using System.Diagnostics.Metrics;
 using System.Net;
 using System.Numerics;
 using System.Security;
+using System.Threading.Tasks.Dataflow;
 
 namespace API.Repository
 {
@@ -75,9 +78,32 @@ namespace API.Repository
         {
             return context.Employees.ToList();
         }
-        public IEnumerable<Employee> Getv2()
+        public IEnumerable<GetVM> Getv2()
         {
-            return context.Employees.ToList();
+
+            var query = (from employee in context.Employees
+                         join profiling in context.Profillings on employee.NIK equals profiling.NIK
+                         join education in context.Educations on profiling.Education_id equals education.Id
+                         join university in context.Universitys on education.University_Id equals university.Id
+                         select new GetVM
+                         {
+                             FullName = employee.FirstName + " " + employee.LastName,
+                             Phone = employee.Phone,
+                             BirthDate = employee.BirthDate,
+                             Salary = employee.Salary,
+                             Email = employee.Email,
+                             Gender = employee.Gender,
+                             Degree = education.Degree,
+                             GPA = education.GPA,
+                             University = university.Name,
+                             
+
+
+                         }).ToList();
+                        
+
+
+            return query;
         }
 
 
