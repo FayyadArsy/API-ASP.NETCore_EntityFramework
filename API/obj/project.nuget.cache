@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "RAld/+t+dvmQeQ1NuvszEl49KWnsRbwfk7Cr/+RfDz6zg7pxcFBj0z8EKh5Hsld9OTljckAKiCLpzG/jYRPq7w==",
+  "dgSpecHash": "NRBKyFI2wX1DjdOgfI//wnOCWaxMTt8qN944t9dzFQettM6JNPRyNJxRipFhEQQBe26/5YGczkFYfgEOD105AA==",
   "success": true,
   "projectFilePath": "D:\\C#\\API\\API\\API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fayyad.nandi\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\fayyad.nandi\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\fayyad.nandi\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\fayyad.nandi\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\fayyad.nandi\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\fayyad.nandi\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

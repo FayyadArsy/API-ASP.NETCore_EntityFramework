@@ -13,6 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MyContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("APIContext")));
 builder.Services.AddScoped<EmployeeRepository>();
+builder.Services.AddScoped<AccountRepository>();
 
 var app = builder.Build();
 

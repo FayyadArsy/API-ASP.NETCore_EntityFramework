@@ -44,10 +44,11 @@ namespace API.Repository
             var account = new Account
             {
                 NIK = employee.NIK,
-                password = register.Password,
+                password = BCrypt.Net.BCrypt.EnhancedHashPassword(register.Password, 12),
             };
             context.Accounts.Add(account);
             var setAccount = context.SaveChanges();
+            
 
             var education = new Education
             {
