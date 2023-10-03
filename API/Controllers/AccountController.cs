@@ -19,7 +19,7 @@ namespace API.Controllers
         public async Task<IActionResult> Index()
         {
             var receiver = "yerol89830@hapincy.com";
-            var subject = "Test Email";
+            var subject = "Reset Password";
             var body = "Hello World";
 
             try
