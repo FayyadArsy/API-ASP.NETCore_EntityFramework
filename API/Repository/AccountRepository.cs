@@ -71,8 +71,8 @@ namespace API.Repository
                 {
                     NIK = data.NIK,
                     password = data.Password,
-                    otp =  resetToken ,
-                    otp_expire = DateTime.Now
+                    otp = resetToken,
+                    otp_expire = DateTime.Now.AddMinutes(3)
                     
                 };
 
@@ -80,6 +80,35 @@ namespace API.Repository
                 var result = context.SaveChanges();
                 SendEmailAsync(data.Email, subject, body);
                 return true;
+            }
+        }
+        public int ChangePassword(ChangePasswordVM ChangePassword)
+        {
+            var data = context.Employees.FirstOrDefault(employe => employe.Email == ChangePassword.Email);
+            DateTime Now = DateTime.Now;
+            if (data == null) 
+            {
+                return -1;
+            } else
+            {
+                var account = context.Accounts.FirstOrDefault(account => account.NIK == data.NIK);
+                if (ChangePassword.Password != ChangePassword.PasswordConfirmed)
+                {
+                    return -2;
+                } else if (ChangePassword.OTP != account.otp)
+                {
+                    return -3;
+                } else if (DateTime.Now > account.otp_expire)
+                {
+                    return -4;
+                } else
+                {
+                    string hashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(ChangePassword.Password, 12);
+                    account.password = hashPassword;
+                    context.SaveChanges();
+                    return 1;
+                }
+                
             }
         }
         public static string GenerateOTP()

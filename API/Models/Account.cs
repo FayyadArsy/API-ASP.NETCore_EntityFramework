@@ -10,6 +10,7 @@ namespace API.Models
         public string password { get; set; }
         public string? otp {  get; set; }
         public DateTime? otp_expire {  get; set; }
+        public bool? isUsed { get; set; }
         public Employee Employee { get; set; }
         public Profilling Profilling { get; set; }
 

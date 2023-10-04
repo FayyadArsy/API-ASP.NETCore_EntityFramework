@@ -1,7 +1,9 @@
 ﻿using API.Repository;
+using API.ViewModel;
 using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Net;
 
 namespace API.Controllers
@@ -35,7 +37,7 @@ namespace API.Controllers
         }
   
 
-            [HttpGet]
+            [HttpGet("Login")]
             public ActionResult Login(string Email, string Password)
             {
                 if (Email == null || Password == null)
@@ -65,8 +67,20 @@ namespace API.Controllers
             {
                 return NotFound("User not found.");
             }
-
-
+        }
+        [HttpPost("Change-Password")]
+        public ActionResult ChangePassword(ChangePasswordVM ChangePassword)
+        {
+            var result = repository.ChangePassword(ChangePassword);
+            switch (result)
+            {
+                case 1:
+                    return Ok("Password Diperbaharui");
+                case -1:
+                    return BadRequest("Email tidak ditemukan");
+                default:
+                    return BadRequest("Error tidak diketahui");
+            }
         }
     }
 }
