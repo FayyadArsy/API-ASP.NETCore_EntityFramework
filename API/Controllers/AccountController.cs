@@ -1,4 +1,5 @@
 ﻿using API.Repository;
+using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -32,6 +33,7 @@ namespace API.Controllers
                 return BadRequest($"Failed to send email: {ex.Message}"); // Mengembalikan BadRequest dengan pesan kesalahan jika terjadi masalah.
             }
         }
+  
 
             [HttpGet]
             public ActionResult Login(string Email, string Password)
@@ -50,5 +52,24 @@ namespace API.Controllers
 
                 return Ok(new { status = HttpStatusCode.OK, message = "Login berhasil." });
             }
+
+        [HttpPost("ForgetPassword")]
+        public ActionResult ForgetPassword(string Email)
+        {
+            bool success = repository.ForgetPassword(Email);
+            if (success)
+            {
+                return Ok("Password reset email sent successfully.");
+            }
+            else
+            {
+                return NotFound("User not found.");
+            }
+
+
         }
     }
+}
+
+    
+

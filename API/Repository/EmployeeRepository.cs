@@ -66,6 +66,7 @@ namespace API.Repository
             };
             context.Profillings.Add(profilling);
             var setProfilling = context.SaveChanges();
+
             if ((setEmployee > 0) && (setAccount > 0) && (setEducation > 0) && (setProfilling > 0))
             {
                 return 1;
