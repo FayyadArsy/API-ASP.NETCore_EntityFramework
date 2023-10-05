@@ -25,8 +25,15 @@ namespace API.Repository
         public bool Login(string Email, string Password)
         {
             var email = context.Employees.FirstOrDefault(Employee => Employee.Email == Email);
+            if (email == null)
+            {
+                return false;
+            }
             var password = context.Accounts.AsNoTracking().Single(account => account.NIK == email.NIK);
-
+            if (password == null)
+            {
+                return false;
+            }
             bool isValid = BCrypt.Net.BCrypt.EnhancedVerify(Password, password.password);
             return isValid;            
         }
