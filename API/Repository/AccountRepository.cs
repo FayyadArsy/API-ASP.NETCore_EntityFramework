@@ -15,11 +15,11 @@ namespace API.Repository
     public class AccountRepository : IAccountRepository
     {
         private readonly MyContext context;
-        private readonly EmailModel _emailSettings;
+        public IConfiguration config;
         public AccountRepository(MyContext context, IConfiguration configuration)
         {
             this.context = context;
-            _emailSettings = configuration.GetSection("EmailSettings").Get<EmailModel>();
+            this.config = configuration;
         }
      
         public bool Login(string Email, string Password)
@@ -32,8 +32,8 @@ namespace API.Repository
         }
         public Task SendEmailAsync(string email, string subject, string body)
         {
-            var mail = _emailSettings.SmtpEmail;
-            var pw = _emailSettings.SmtpPassword;
+            var mail = config["EmailSettings:SmtpEmail"];
+            var pw = config["EmailSettings:SmtpPassword"];
 
             var client = new SmtpClient("smtp.office365.com", 587)
             {
