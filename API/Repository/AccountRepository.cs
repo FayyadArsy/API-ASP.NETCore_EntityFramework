@@ -72,12 +72,19 @@ namespace API.Repository
                     NIK = data.NIK,
                     password = data.Password,
                     otp = resetToken,
-                    otp_expire = DateTime.Now.AddMinutes(3)
-                    
+                    otp_expire = DateTime.Now.AddMinutes(3),
+                    isUsed = false
                 };
 
                 context.Entry(updateData).State = EntityState.Modified;
-                var result = context.SaveChanges();
+                context.SaveChanges();
+
+             /*   var account = context.Accounts.Find(data.NIK);
+                account.otp = resetToken;
+                account.otp_expire = DateTime.Now.AddMinutes(3);
+                account.isUsed = false;
+                context.SaveChanges();*/
+
                 SendEmailAsync(data.Email, subject, body);
                 return true;
             }
@@ -92,6 +99,8 @@ namespace API.Repository
             } else
             {
                 var account = context.Accounts.FirstOrDefault(account => account.NIK == data.NIK);
+                var validasi = ValidatePassoword(ChangePassword.Password);
+                bool isValid = BCrypt.Net.BCrypt.EnhancedVerify(ChangePassword.Password, account.password);
                 if (ChangePassword.Password != ChangePassword.PasswordConfirmed)
                 {
                     return -2;
@@ -101,10 +110,20 @@ namespace API.Repository
                 } else if (DateTime.Now > account.otp_expire)
                 {
                     return -4;
+                } else if (account.isUsed == true)
+                {
+                    return -5;
+                } else if (isValid)
+                {
+                    return -6;
+                } else if (!validasi)
+                {
+                    return -7;
                 } else
                 {
                     string hashPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(ChangePassword.Password, 12);
                     account.password = hashPassword;
+                    account.isUsed = true;
                     context.SaveChanges();
                     return 1;
                 }
@@ -124,6 +143,25 @@ namespace API.Repository
             }
 
             return otp.ToString();
+        }
+        public static bool ValidatePassoword(string password)
+        {
+            if (password.Length < 8)
+            {
+                return false;
+            }
+
+            if (!password.Any(char.IsUpper))
+            {
+                return false;
+            }
+
+            if (!password.Any(char.IsDigit))
+            {
+                return false;
+            }
+
+            return true;
         }
 
     }
