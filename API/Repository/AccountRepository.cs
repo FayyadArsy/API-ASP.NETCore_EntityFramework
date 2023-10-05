@@ -7,16 +7,21 @@ using System.Net.Mail;
 using System.Net;
 using System.Text;
 using Microsoft.Win32;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Repository
 {
     public class AccountRepository : IAccountRepository
     {
         private readonly MyContext context;
-        public AccountRepository(MyContext context)
+        private readonly EmailModel _emailSettings;
+        public AccountRepository(MyContext context, IConfiguration configuration)
         {
             this.context = context;
+            _emailSettings = configuration.GetSection("EmailSettings").Get<EmailModel>();
         }
+     
         public bool Login(string Email, string Password)
         {
             var email = context.Employees.FirstOrDefault(Employee => Employee.Email == Email);
@@ -27,8 +32,8 @@ namespace API.Repository
         }
         public Task SendEmailAsync(string email, string subject, string body)
         {
-            var mail = "galaxiaquatope@outlook.com";
-            var pw = "fayyad12345";
+            var mail = _emailSettings.SmtpEmail;
+            var pw = _emailSettings.SmtpPassword;
 
             var client = new SmtpClient("smtp.office365.com", 587)
             {
