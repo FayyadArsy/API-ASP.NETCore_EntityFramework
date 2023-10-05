@@ -134,24 +134,25 @@ namespace API.Repository
 
         private string CustomNIK()
         {
-            string date = DateTime.Now.ToString("ddMMyy");
+            string currentDate = DateTime.Now.ToString("ddMMyy");
             string newNIK = "";
 
-            var lastData = context.Employees.OrderBy(employee => employee.NIK).LastOrDefault();
-            if (lastData == null)
+            var lastData = context.Employees
+                .OrderByDescending(employee => employee.NIK)
+                .FirstOrDefault();
+
+            if (lastData == null || !lastData.NIK.StartsWith(currentDate))
             {
-                newNIK = date + "001";
+                newNIK = currentDate + "001";
             }
             else
             {
                 var nikLastData = lastData.NIK;
                 string lastThree = nikLastData.Substring(nikLastData.Length - 3);
-
-
                 int nextSequence = int.Parse(lastThree) + 1;
-                newNIK = date + nextSequence.ToString("000");
-                /*return current date tostring ("D3")*/
+                newNIK = currentDate + nextSequence.ToString("000");
             }
+
             return newNIK;
         }
 
