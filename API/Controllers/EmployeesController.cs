@@ -2,6 +2,7 @@
 using API.Models;
 using API.Repository;
 using API.ViewModel;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -17,6 +18,13 @@ namespace API.Controllers
         {
             this.repository = repository;
         }
+        /*[EnableCors]*/
+        [HttpGet("TestCors")]
+        public ActionResult TestCORS()
+        {
+            return Ok("Test CORS Berhasil");
+        }
+
         [HttpGet]
         public ActionResult Get()
         {
